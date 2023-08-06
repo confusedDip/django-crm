@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container col-6 col-offset-3 text-center">
+
+    {% if user.is_authenticated %}
+        <h1>Register</h1>
+        <p>You are already logged in as {{ user.username }}, please logout first to register another account </p>
+
+    {% else %}
+    <h1 class="mt-5">Register</h1>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        {% if form.errors %}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+			  Your Form Has Errors
+			  {% for field in form %}
+			  	{% if field.errors %}
+			  		{{ field.errors }}
+			  	{% endif %}
+			  {% endfor %}
+			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		{% endif %}
+        {{ form.as_p }}
+
+        <div class="d-grid gap-2">
+              <button class="btn btn-secondary" type="submit">Register</button>
+        </div>
+
+    </form>
+
+    {% endif %}
+
+    </div>
+
+
+{% endblock %}
