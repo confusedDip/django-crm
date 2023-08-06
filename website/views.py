@@ -87,19 +87,29 @@ def add_record(request):
             if form.is_valid():
                 form.save()
 
-                first_name = form.cleaned_data["first_name"]
-                last_name = form.cleaned_data["last_name"]
-                email = form.cleaned_data["email"]
-                phone = form.cleaned_data["phone"]
-                address = form.cleaned_data["address"]
-                city = form.cleaned_data["city"]
-                state = form.cleaned_data["state"]
-                zipcode = form.cleaned_data["zipcode"]
-
                 messages.success(request, "Record Added Sucessfully!")
                 return redirect('home')
 
         return render(request, "add_record.html", {"form": form})
+
+    else:
+
+        messages.success(request, "You must be logged in to view this page!")
+        return redirect("home")
+
+
+def update_record(request, pk):
+    if request.user.is_authenticated:
+        record = Record.objects.get(id=pk)
+        form = AddRecordForm(request.POST or None, instance=record)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "The record has been successfully updated!")
+            return redirect('home')
+
+        else:
+            return render(request, 'update_record.html', {"form": form})
 
     else:
 
