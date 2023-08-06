@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container col-6 col-offset-3 text-center">
+    {% if user.is_authenticated %}
+    <h1 class="mt-5">Add Record</h1>
+    <form method="post" action="{% url 'add' %}">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <div class="d-grid gap-2">
+              <button class="btn btn-primary" type="submit">Add Record</button>
+            <a class="btn btn-secondary" href="{% url 'home' %}">Go Back</a>
+        </div>
+    </form>
+
+    {% endif %}
+
+
+    </div>
+{% endblock %}

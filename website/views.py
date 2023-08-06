@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm
+from .forms import SignUpForm, AddRecordForm
 from .models import Record
 
 
@@ -77,3 +77,31 @@ def delete_record(request, pk):
     else:
         messages.success(request, "You must be logged in to view this page!")
         return redirect('home')
+
+
+def add_record(request):
+    form = AddRecordForm(request.POST or None)
+
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+
+                first_name = form.cleaned_data["first_name"]
+                last_name = form.cleaned_data["last_name"]
+                email = form.cleaned_data["email"]
+                phone = form.cleaned_data["phone"]
+                address = form.cleaned_data["address"]
+                city = form.cleaned_data["city"]
+                state = form.cleaned_data["state"]
+                zipcode = form.cleaned_data["zipcode"]
+
+                messages.success(request, "Record Added Sucessfully!")
+                return redirect('home')
+
+        return render(request, "add_record.html", {"form": form})
+
+    else:
+
+        messages.success(request, "You must be logged in to view this page!")
+        return redirect("home")
