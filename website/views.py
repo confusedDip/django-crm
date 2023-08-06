@@ -7,7 +7,6 @@ from .models import Record
 
 # Create your views here.
 def home(request):
-
     records = Record.objects.all()
 
     if request.method == "POST":
@@ -51,7 +50,7 @@ def register_user(request):
             login(request, user)
 
             messages.success(request, "You have successfully registered!")
-            return  redirect('home')
+            return redirect('home')
 
     else:
         form = SignUpForm()
@@ -59,7 +58,6 @@ def register_user(request):
 
 
 def view_record(request, pk):
-
     if request.user.is_authenticated:
 
         record = Record.objects.get(id=pk)
@@ -67,4 +65,15 @@ def view_record(request, pk):
 
     else:
         messages.success(request, "You must be logged in to view this page!")
-        return redirect(request, 'home')
+        return redirect('home')
+
+
+def delete_record(request, pk):
+    if request.user.is_authenticated:
+        record = Record.objects.get(id=pk)
+        record.delete()
+        messages.success(request, f"Record {pk} has been successfully deleted!")
+        return redirect('home')
+    else:
+        messages.success(request, "You must be logged in to view this page!")
+        return redirect('home')
