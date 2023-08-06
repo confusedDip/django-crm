@@ -6,21 +6,27 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
         {% if user.is_authenticated %}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
+      </ul>
+        <span class="navbar-text ml-auto">
+          Logged in as <strong>{{user.username}}</strong>
+        </span>
+
         {% else %}
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" href="{% url 'home' %}">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'register' %}">Register</a>
         </li>
-        {% endif %}
       </ul>
+        {% endif %}
     </div>
   </div>
 </nav>
